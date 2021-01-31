@@ -7,8 +7,8 @@ const App = (props) => {
   const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0))
 
   const clickNext = () => {
-    const random = Math.floor(Math.random() * props.anecdotes.length);
-    setSelected(random);
+    const random = Math.floor(Math.random() * props.anecdotes.length)
+    setSelected(random)
   }
 
   const clickVote = () => {
@@ -16,7 +16,7 @@ const App = (props) => {
     updatedVotes[selected] += 1
     setVotes(updatedVotes)
 
-    let voteCount = votes[selected];
+    let voteCount = votes[selected]
     if (voteCount > highestVoted.votes) {
       setHighestVoted({ votes: voteCount, index: selected })
     }

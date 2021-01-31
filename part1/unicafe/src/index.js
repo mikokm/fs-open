@@ -22,7 +22,7 @@ const Statistics = (props) => {
     return <p>No feedback given</p>
   }
 
-  const avg = (good - bad) / all;
+  const avg = (good - bad) / all
   const pos = good / all
 
   return (
