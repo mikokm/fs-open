@@ -38,26 +38,42 @@ test('blogs have the field id', async () => {
   }
 })
 
-test('adding a blog works', async () => {
-  const before = await api.get('/api/blogs')
-  const newBlog = {
-    title: 'TEST_TITLE',
-    author: 'TEST_AUTHOR',
-    url: 'url',
-    likes: 0
-  }
+const testBlog = {
+  title: 'TEST_TITLE',
+  author: 'TEST_AUTHOR',
+  url: 'url',
+  likes: 0
+}
 
+const findTestBlog = (blogs) => {
+  return blogs.find(blog =>
+    blog.title == testBlog.title &&
+    blog.author == testBlog.author
+  )
+}
+
+test('adding a blog works', async () => {
   await api
     .post('/api/blogs')
-    .send(newBlog)
+    .send(testBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
   const after = await api.get('/api/blogs')
 
-  expect(after.body.length).toBe(before.body.length + 1)
-  const found = after.body.find(
-    blog => blog.title == newBlog.title && blog.author == newBlog.author
-  )
+  expect(after.body.length).toBe(testData.length + 1)
+  const found = findTestBlog(after.body)
   expect(found).toBeDefined()
+})
+
+test('removing a blog works', async () => {
+  const before = await api.get('/api/blogs')
+  const toRemove = before.body[0]
+  await api
+    .delete(`/api/blogs/${toRemove.id}`)
+    .expect(204)
+
+  const after = await api.get('/api/blogs')
+  expect(after.body.length).toBe(before.body.length - 1)
+  expect(after.body).not.toContain(toRemove)
 })
