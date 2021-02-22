@@ -37,3 +37,27 @@ test('blogs have the field id', async () => {
     expect(blog.id).toBeDefined()
   }
 })
+
+test('adding a blog works', async () => {
+  const before = await api.get('/api/blogs')
+  const newBlog = {
+    title: 'TEST_TITLE',
+    author: 'TEST_AUTHOR',
+    url: 'url',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const after = await api.get('/api/blogs')
+
+  expect(after.body.length).toBe(before.body.length + 1)
+  const found = after.body.find(
+    blog => blog.title == newBlog.title && blog.author == newBlog.author
+  )
+  expect(found).toBeDefined()
+})
