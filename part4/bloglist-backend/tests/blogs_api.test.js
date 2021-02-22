@@ -3,11 +3,19 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
+
 const testData = require('./test_data')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(testData)
+
+  await User.deleteMany({})
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
+  await user.save()
 })
 
 afterAll(() => {
