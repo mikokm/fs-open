@@ -38,11 +38,57 @@ describe('total likes', () => {
 describe('favorite blogs', () => {
   test('empty blog list returns undefined blog', () => {
     const result = listHelper.favoriteBlog([])
-    expect(result).toBe(undefined)
+    expect(result).toBeUndefined()
   })
 
   test('multiple blogs', () => {
     const result = listHelper.favoriteBlog(testBlogs)
     expect(result.likes).toBe(12)
+  })
+})
+
+describe('most blogs', () => {
+  test('empty blog list', () => {
+    const result = listHelper.mostBlogs([])
+    expect(result).toBeUndefined()
+  })
+
+  test('one blog', () => {
+    const result = listHelper.mostBlogs([testBlogs[0]])
+    expect(result).toStrictEqual({
+      author: testBlogs[0].author,
+      count: 1
+    })
+  })
+
+  test('multiple blogs', () => {
+    const result = listHelper.mostBlogs(testBlogs)
+    expect(result).toStrictEqual({
+      author: 'Robert C. Martin',
+      count: 3
+    })
+  })
+})
+
+describe('most likes', () => {
+  test('empty blog list', () => {
+    const result = listHelper.mostLikes([])
+    expect(result).toBeUndefined()
+  })
+
+  test('one blog', () => {
+    const result = listHelper.mostLikes([testBlogs[0]])
+    expect(result).toStrictEqual({
+      author: testBlogs[0].author,
+      likes: 7
+    })
+  })
+
+  test('multiple blogs', () => {
+    const result = listHelper.mostLikes(testBlogs)
+    expect(result).toStrictEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
   })
 })
