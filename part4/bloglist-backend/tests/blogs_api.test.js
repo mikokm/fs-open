@@ -38,21 +38,18 @@ test('blogs have the field id', async () => {
   }
 })
 
-const testBlog = {
-  title: 'TEST_TITLE',
-  author: 'TEST_AUTHOR',
-  url: 'url',
-  likes: 0
-}
-
 const findTestBlog = (blogs) => {
-  return blogs.find(blog =>
-    blog.title == testBlog.title &&
-    blog.author == testBlog.author
-  )
+  return blogs.find(blog => blog.title == 'TEST_TITLE' && blog.author == 'TEST_AUTHOR')
 }
 
 test('adding a blog works', async () => {
+  const testBlog = {
+    title: 'TEST_TITLE',
+    author: 'TEST_AUTHOR',
+    url: 'url',
+    likes: 0
+  }
+
   await api
     .post('/api/blogs')
     .send(testBlog)
@@ -76,4 +73,23 @@ test('removing a blog works', async () => {
   const after = await api.get('/api/blogs')
   expect(after.body.length).toBe(before.body.length - 1)
   expect(after.body).not.toContain(toRemove)
+})
+
+test('blogs get default like value of 0', async () => {
+  const testBlogWithoutLikes = {
+    title: 'TEST_TITLE',
+    author: 'TEST_AUTHOR',
+    url: 'url',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(testBlogWithoutLikes)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const after = await api.get('/api/blogs')
+  const found = findTestBlog(after.body)
+  expect(found).toBeDefined()
+  expect(found.likes).toBe(0)
 })
