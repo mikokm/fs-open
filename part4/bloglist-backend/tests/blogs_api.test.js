@@ -93,3 +93,16 @@ test('blogs get default like value of 0', async () => {
   expect(found).toBeDefined()
   expect(found.likes).toBe(0)
 })
+
+test('new blogs need to have title and url', async () => {
+  const testBlogWithoutTitle = {
+    author: 'TEST_AUTHOR',
+    url: 'url',
+    likes: 0,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(testBlogWithoutTitle)
+    .expect(400)
+})
