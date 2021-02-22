@@ -3,7 +3,6 @@ const testBlogs = require('./test_data')
 
 test('dummy returns one', () => {
   const blogs = []
-
   const result = listHelper.dummy(blogs)
   expect(result).toBe(1)
 })
@@ -26,13 +25,24 @@ describe('total likes', () => {
   })
 
   test('empty list has zero likes', () => {
-    const blogs = []
-    const result = listHelper.totalLikes(blogs)
+    const result = listHelper.totalLikes([])
     expect(result).toBe(0)
   })
 
-  test('larger list has more likes', () => {
+  test('multiple blogs', () => {
     const result = listHelper.totalLikes(testBlogs)
     expect(result).toBe(36)
+  })
+})
+
+describe('favorite blogs', () => {
+  test('empty blog list returns undefined blog', () => {
+    const result = listHelper.favoriteBlog([])
+    expect(result).toBe(undefined)
+  })
+
+  test('multiple blogs', () => {
+    const result = listHelper.favoriteBlog(testBlogs)
+    expect(result.likes).toBe(12)
   })
 })
