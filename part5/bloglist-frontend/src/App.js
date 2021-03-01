@@ -74,7 +74,7 @@ const App = () => {
     blogService
       .create(blog)
       .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+        SortAndSetBlogs(blogs.concat(returnedBlog))
         showNotification(`Successfully added blog ${returnedBlog.title}`, false)
       })
     blogFormRef.current.toggleVisibility()
