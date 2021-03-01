@@ -76,6 +76,15 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
+  const addLike = (blog) => {
+    const newBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id }
+    blogService
+      .update(blog.id, newBlog)
+      .then(updatedBlog => {
+        setBlogs(blogs.map(blog => blog.id === newBlog.id ? updatedBlog : blog))
+      })
+  }
+
   if (!user) {
     return (
       <div>
@@ -105,7 +114,7 @@ const App = () => {
       <br />
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} addLike={addLike} />
         )}
       </div>
     </div>
