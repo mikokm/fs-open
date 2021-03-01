@@ -22,9 +22,13 @@ const App = () => {
     setTimeout(() => setNotification(null), 3000)
   }
 
+  const SortAndSetBlogs = blogs => {
+    setBlogs(blogs.sort((a, b) => a.likes - b.likes))
+  }
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      SortAndSetBlogs(blogs)
     )
   }, [])
 
@@ -81,7 +85,8 @@ const App = () => {
     blogService
       .update(blog.id, newBlog)
       .then(updatedBlog => {
-        setBlogs(blogs.map(blog => blog.id === newBlog.id ? updatedBlog : blog))
+        const blogList = blogs.map(blog => blog.id === newBlog.id ? updatedBlog : blog)
+        SortAndSetBlogs(blogList)
       })
   }
 
