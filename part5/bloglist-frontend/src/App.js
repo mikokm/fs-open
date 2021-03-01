@@ -85,8 +85,20 @@ const App = () => {
     blogService
       .update(blog.id, newBlog)
       .then(updatedBlog => {
-        const blogList = blogs.map(blog => blog.id === newBlog.id ? updatedBlog : blog)
+        const blogList = blogs.map(b => b.id === newBlog.id ? updatedBlog : b)
         SortAndSetBlogs(blogList)
+      })
+  }
+
+  const removeBlog = (blog) => {
+    blogService
+      .remove(blog.id)
+      .then(() => {
+        const blogList = blogs.filter(b => b.id !== blog.id)
+        SortAndSetBlogs(blogList)
+        showNotification(`Removed blog ${blog.title}`, false)
+      }).catch(error => {
+        showNotification(error.toString(), true)
       })
   }
 
@@ -119,7 +131,7 @@ const App = () => {
       <br />
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} addLike={addLike} />
+          <Blog key={blog.id} blog={blog} addLike={addLike} removeBlog={removeBlog} />
         )}
       </div>
     </div>
