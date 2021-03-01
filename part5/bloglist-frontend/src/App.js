@@ -60,7 +60,12 @@ const App = () => {
       setPassword('')
       showNotification(`Logged in as ${user.name}`, false)
     } catch (exception) {
-      showNotification(exception.toString(), true)
+      const res = exception.response
+      if (res.status === 401) {
+        showNotification(res.data.error, true)
+      } else {
+        showNotification(res.toString(), true)
+      }
     }
   }
 
